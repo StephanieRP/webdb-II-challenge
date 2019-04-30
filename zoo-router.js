@@ -1,16 +1,8 @@
 const knex = require('knex')
 const express = require('express')
 const router = express.Router();
-
-const knexConfig = {
-    client: 'sqlite3',
-    connection: {
-      filename: './data/lambda.sqlite3'  
-    },
-    useNullAsDefault: true, 
-  }
-  
-  const zooDb = knex(knexConfig)
+const knexConfig = require('./knexfile.js')
+const zooDb = knex(knexConfig)
   
   router.get('/', async (req, res) => {
     try {
@@ -54,7 +46,7 @@ const knexConfig = {
         const zooID = await zooDb('zoos')
         .where({ id: id})
         .update(body)
-        res.status(200).json(zooID)
+        res.status(200).json(body)
     } catch (error) {
         res.status(500).json({message: 'Something went wrong...'})
     }
@@ -71,7 +63,5 @@ const knexConfig = {
         res.status(500).json({message: 'Something went wrong...'})
     }
   });
-
-
 
 module.exports = router;
